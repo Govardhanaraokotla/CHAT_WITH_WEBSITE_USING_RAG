@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Content Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #ffffff10;
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        h1 span {
+            background: linear-gradient(135deg, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        label {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+            text-align: left;
+            color: #dfe6e9;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #fff;
+            color: #2d3436;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ff8a00, #e52e71);
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+        }
+        .loading-spinner {
+            margin: 20px 0;
+            font-size: 1.2rem;
+            display: none;
+        }
+        .response-card {
+            background: #ffffff15;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+        pre {
+            text-align: left;
+            color: #dfe6e9;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 <span>Web Content Analyzer</span></h1>
+        <form id="queryForm">
+            <label for="urls">🔗 Enter URLs (comma-separated):</label>
+            <input type="text" id="urls" name="urls" placeholder="https://example.com, https://another.com" required>
+            
+            <label for="query">💬 Enter Your Query:</label>
+            <input type="text" id="query" name="query" placeholder="E.g., 'Latest trends in AI'" required>
+            
+            <button type="submit">Analyze Content</button>
+        </form>
+        <div class="loading-spinner" id="loadingSpinner">
+            ⏳ Processing your request...
+        </div>
+        <div class="response-card" id="responseSection">
+            <h2>📋 Results:</h2>
+            <pre id="responseText">Processing...</pre>
+        </div>
+    </div>
+    <script>
+        document.getElementById('queryForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const urls = document.getElementById('urls').value;
+            const query = document.getElementById('query').value;
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const responseSection = document.getElementById('responseSection');
+            const responseText = document.getElementById('responseText');
+
+            loadingSpinner.style.display = "block";
+            responseSection.style.display = "none";
+
+            try {
+                const response = await fetch('/process', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ urls, query })
+                });
+
+                const result = await response.json();
+                responseText.textContent = result.response;
+            } catch (error) {
+                responseText.textContent = "❌ An error occurred. Please try again.";
+            } finally {
+                loadingSpinner.style.display = "none";
+                responseSection.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
