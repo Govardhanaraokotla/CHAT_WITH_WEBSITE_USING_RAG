@@ -2,7 +2,7 @@
 
 ## 🌐 Chat with Websites Using RAG
 
-**Chat with Websites** is a web-based application that enables users to interact with and query website content seamlessly. By combining web scraping and advanced text processing, it provides meaningful insights in response to your queries.
+Welcome to the **Chat with Websites** is a web-based application that enables users to interact with and query website content seamlessly. By combining web scraping and advanced text processing, it provides meaningful insights in response to your queries.
 
 ---
 
